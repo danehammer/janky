@@ -23,6 +23,7 @@ EOL
   s.add_dependency "activerecord", "~>3.2.0"
   s.add_dependency "broach", "~>0.2"
   s.add_dependency "replicate", "~>1.4"
+  s.add_dependency "net-yail", "~> 1.6.1"
 
   # development
   s.add_development_dependency "shotgun", "~>0.9"
@@ -56,6 +57,7 @@ lib/janky/builder/runner.rb
 lib/janky/chat_service.rb
 lib/janky/chat_service/campfire.rb
 lib/janky/chat_service/hipchat.rb
+lib/janky/chat_service/irc.rb
 lib/janky/chat_service/mock.rb
 lib/janky/commit.rb
 lib/janky/database/migrate/1312115512_init.rb
