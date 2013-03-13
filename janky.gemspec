@@ -23,7 +23,7 @@ EOL
   s.add_dependency "activerecord", "~>3.2.0"
   s.add_dependency "broach", "~>0.2"
   s.add_dependency "replicate", "~>1.4"
-  s.add_dependency "Ruby-IRC", "~>1.0.13"
+  s.add_dependency "net-yail", "~> 1.6.1"
 
   # development
   s.add_development_dependency "shotgun", "~>0.9"

@@ -1,4 +1,4 @@
-require "IRC"
+require 'net/yail'
 
 module Janky
   module ChatService
@@ -9,10 +9,22 @@ module Janky
         nick = settings["JANKY_CHAT_IRC_NICK"] || "janky"
         @channel = get_required_setting(settings, "JANKY_CHAT_IRC_CHANNEL")
 
-        @client = IRC.new @nick, server, port, "janky"    
-        @client_thread = Thread.new do
-          @client.connect
-        end
+        @client = Net::YAIL.new(
+          :address    => server,
+          :username   => 'janky',
+          :realname   => 'janky',
+          :nicknames  => [nick, "#{nick}_", "#{nick}__"]
+        )
+
+        @rooms = [Room.new(@channel, @channel)]
+
+        @client.on_invite { |event|
+          @client.join(event.channel)
+          @rooms << Room.new(event.channel, event.channel)
+        }
+
+        @client.start_listening
+        @client.join @channel
       end
 
       def get_required_setting(settings, setting)
@@ -24,14 +36,11 @@ module Janky
       end
 
       def speak(message, room_id, options = {})
-        @client.send_message room_id, message
+        @client.msg room_id, message
       end
 
       def rooms
-        @client.join(@channel)
-        @rooms ||= @client.channels.map do |channel|
-          Room.new(channel.name, channel.name)
-        end
+        @rooms
       end
     end
   end
